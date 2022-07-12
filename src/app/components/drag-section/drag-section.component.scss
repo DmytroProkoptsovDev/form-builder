@@ -1,0 +1,14 @@
+.dragable-element {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 0;
+
+    &:not(:last-child) {
+        border-bottom: 1px solid #cacaca;
+    }
+    &:active {
+        background-color: red;
+    }
+}
