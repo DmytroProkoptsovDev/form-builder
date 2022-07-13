@@ -12,7 +12,18 @@
     padding: 16px 0;
     text-align: center;
     border: 1px solid $clr-accent-main;
+}
+.in-form {
+    position: relative;
 
+    &::before {
+        position: absolute;
+        display: block;
+        content: '';
+        inset: 0;
+        background-color: $clr-selected;
+        z-index: 1;
+    }
 }
 
 .dragable {
@@ -27,6 +38,7 @@
             cursor: move;
         }
 }
+
 
 // ======================== classes for accordion field element ==========================//
 

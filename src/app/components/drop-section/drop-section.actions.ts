@@ -1,5 +1,7 @@
-import { createAction } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
+import { IElementProps } from 'src/app/models/actions.model';
 
-export const increment = createAction('[Counter Component] Increment');
-export const decrement = createAction('[Counter Component] Decrement');
-export const reset = createAction('[Counter Component] Reset');
+export const applyPropsToElement = createAction(
+    '[Drop section] Apply props to element',
+    props<IElementProps>()
+);

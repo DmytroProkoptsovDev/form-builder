@@ -23,6 +23,8 @@ import { AddComponentDirective } from './directives/add-component.directive';
 import { MatInputModule } from '@angular/material/input';
 import { StoreModule } from '@ngrx/store';
 import { dropSectionReducer } from './components/drop-section/drop.section.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,8 @@ import { dropSectionReducer } from './components/drop-section/drop.section.reduc
     MatInputModule,
     StoreModule.forRoot({
       dropSection: dropSectionReducer
-    })
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
