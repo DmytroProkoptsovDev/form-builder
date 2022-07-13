@@ -1,3 +1,17 @@
 <app-section>
-    
+    <ul
+        id="dragable"
+        cdkDropList
+        [cdkDropListData]="dragable"
+        (cdkDropListDropped)="drop($event)"
+    >
+        <ng-template addComponent></ng-template>
+        <li
+            cdkDrag
+            *ngFor="let elem of dragable"
+            class="form-builder-element dragable"
+        >
+            {{ elem.type | titlecase }}
+        </li>
+    </ul>
 </app-section>

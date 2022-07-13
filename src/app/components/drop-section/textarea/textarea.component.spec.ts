@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StylingSectionComponent } from './styling-section.component';
+import { TextAreaComponent } from './textarea.component';
 
-describe('StylingSectionComponent', () => {
-  let component: StylingSectionComponent;
-  let fixture: ComponentFixture<StylingSectionComponent>;
+describe('TextAreaComponent', () => {
+  let component: TextAreaComponent;
+  let fixture: ComponentFixture<TextAreaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StylingSectionComponent ]
+      declarations: [ TextAreaComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(StylingSectionComponent);
+    fixture = TestBed.createComponent(TextAreaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

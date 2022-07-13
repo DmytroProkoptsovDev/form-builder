@@ -1,0 +1,5 @@
+@import '../../../styles/variables/index.scss';
+
+:host ::ng-deep .accordion-field:not(:last-child) {
+    border-bottom: 1px solid $clr-accent-main;
+}

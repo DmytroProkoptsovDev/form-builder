@@ -1,5 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { nanoid } from 'nanoid'
+import { IDragable, TDragableInstance } from 'src/app/models/drabable.model';
+
 
 
 @Component({
@@ -8,20 +11,33 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
   styleUrls: ['./drag-section.component.scss']
 })
 export class DragSectionComponent implements OnInit {
-  @Input() todoList: any;
+  dragable: IDragable[] = [];
+  temp: IDragable[] = [];
+  instanceTypes: TDragableInstance[] = [
+    'input',
+    'button',
+    'textarea',
+    'checkbox',
+    'select'
+  ];
+  
+  constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.dragable = this.instanceTypes.map(type => ({ id: nanoid(), type }));
+  }
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<IDragable[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(
         event.previousContainer.data,
-        event.container.data,
+        this.temp,
         event.previousIndex,
         event.currentIndex,
       );
+      this.temp.length = 0;
     }
   }
 }

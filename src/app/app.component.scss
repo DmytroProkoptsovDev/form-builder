@@ -1,0 +1,6 @@
+:host ::ng-deep div.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding-top: 20px;
+}

@@ -1,6 +1,41 @@
 <app-section>
-    <form class="form-builder-container">
-        <h3>Form label</h3>
-        
+    <form
+        id="formDropContainer"
+        cdkDropList
+        [cdkDropListData]="formDropContainer"
+        (cdkDropListDropped)="drop($event)"
+    >
+        <h3 class="form-builder-element">Form label</h3>
+        <ng-container
+            *ngFor="let formElement of formDropContainer"
+        >
+            <app-input
+                cdkDrag
+                *ngIf="formElement.type === 'input'"
+            ></app-input>
+            <app-button 
+                cdkDrag
+                *ngIf="formElement.type === 'button'"
+            ></app-button>
+            <app-textarea 
+                cdkDrag
+                *ngIf="formElement.type === 'textarea'"
+            ></app-textarea>
+            <app-select-option 
+                cdkDrag 
+                *ngIf="formElement.type === 'select'"
+            ></app-select-option>
+            <app-checkbox-with-label
+                cdkDrag
+                *ngIf="formElement.type === 'checkbox'"
+            ></app-checkbox-with-label>
+        </ng-container>
+
+        <button
+            type="submit"
+            *ngIf="formDropContainer.length"
+        >
+            Save form
+        </button>
     </form>
 </app-section>
