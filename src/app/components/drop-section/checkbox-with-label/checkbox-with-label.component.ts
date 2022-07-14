@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-checkbox-with-label',
@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckboxWithLabelComponent implements OnInit {
 
+  @Input() onClick: (element: any) => void = () => { };
+
   constructor() { }
 
   ngOnInit(): void {
+  
   }
 
 }

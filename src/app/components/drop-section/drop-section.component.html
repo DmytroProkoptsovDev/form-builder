@@ -10,22 +10,27 @@
             *ngFor="let formElement of formDropContainer"
         >
             <app-input
+                [onClick]="defineElement"
                 cdkDrag
                 *ngIf="formElement.type === 'input'"
             ></app-input>
-            <app-button 
+            <app-button
+                [onClick]="defineElement" 
                 cdkDrag
                 *ngIf="formElement.type === 'button'"
             ></app-button>
-            <app-textarea 
+            <app-textarea
+                [onClick]="defineElement" 
                 cdkDrag
                 *ngIf="formElement.type === 'textarea'"
             ></app-textarea>
-            <app-select-option 
+            <app-select-option
+                [onClick]="defineElement" 
                 cdkDrag 
                 *ngIf="formElement.type === 'select'"
             ></app-select-option>
             <app-checkbox-with-label
+                [onClick]="defineElement"
                 cdkDrag
                 *ngIf="formElement.type === 'checkbox'"
             ></app-checkbox-with-label>

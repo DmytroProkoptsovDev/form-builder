@@ -1,2 +1,9 @@
-<input type="checkbox" />
-<label class="form-builder-element">checkbox-with-label works!</label>
+<label
+    #checkbox
+    id="checkbox"
+    (click)="onClick(checkbox)"
+    class="form-builder-element"
+>
+    checkbox-with-label works!
+    <input type="checkbox" />
+</label>

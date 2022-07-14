@@ -8,7 +8,7 @@ export interface IElementType {
 
 // model defining paylod of props to be applied to the element
 export interface IElementProps {
-    elementType: 'input';
+    elementType: IElementType;
     label?: string;
     placeholder?: string;
     width?: string;

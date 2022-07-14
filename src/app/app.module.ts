@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -18,13 +19,14 @@ import { ButtonComponent } from './components/drop-section/button/button.compone
 import { CheckboxWithLabelComponent } from './components/drop-section/checkbox-with-label/checkbox-with-label.component';
 import { SelectOptionComponent } from './components/drop-section/select-option/select-option.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
-import { DragablePipe } from './pipes/dragable.pipe';
 import { AddComponentDirective } from './directives/add-component.directive';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { StoreModule } from '@ngrx/store';
 import { dropSectionReducer } from './components/drop-section/drop.section.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { NormalizeCasePipe } from './pipes/normalize-case/normalize-case.pipe';
 
 @NgModule({
   declarations: [
@@ -40,17 +42,19 @@ import { environment } from '../environments/environment';
     CheckboxWithLabelComponent,
     SelectOptionComponent,
     AccordionComponent,
-    DragablePipe,
     AddComponentDirective,
+    NormalizeCasePipe,
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     DragDropModule,
     CdkAccordionModule,
     TextFieldModule,
     MatInputModule,
+    MatSelectModule,
     StoreModule.forRoot({
       dropSection: dropSectionReducer
     }),

@@ -1,11 +1,15 @@
 import { createReducer, on } from '@ngrx/store';
+import { IElementProperty, selectElement } from './drop-section.actions';
 
-export const initialState = 0;
+export interface IState {
+    elementDetails: IElementProperty;
+}
 
-export const dropSectionReducer = ( ) => {};
-// export const dropSectionReducer = createReducer(
-//     initialState,
-//     on(increment, (state) => state + 1),
-//     on(decrement, (state) => state - 1),
-//     on(reset, () => 0)
-// );
+export const initialState: IState = {
+    elementDetails: {},
+};
+
+export const dropSectionReducer = createReducer(
+    initialState,
+    on(selectElement, (state, { payload }) => ({ elementDetails: payload })),
+);
