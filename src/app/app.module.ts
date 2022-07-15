@@ -27,6 +27,8 @@ import { dropSectionReducer } from './components/drop-section/drop.section.reduc
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { NormalizeCasePipe } from './pipes/normalize-case/normalize-case.pipe';
+import { accordionReducer } from './components/accordion/accordion.reducers';
+import { dragSectionReducer } from './components/drag-section/drag-section.reducers';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { NormalizeCasePipe } from './pipes/normalize-case/normalize-case.pipe';
     MatInputModule,
     MatSelectModule,
     StoreModule.forRoot({
-      dropSection: dropSectionReducer
+      dropSection: dropSectionReducer,
+      accordion: accordionReducer,
+      dragSection: dragSectionReducer
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],

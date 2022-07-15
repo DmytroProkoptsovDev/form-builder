@@ -1,9 +1,21 @@
 <cdk-accordion class="example-accordion">
-    <cdk-accordion-item *ngFor="let section of sections; let index = index;" #accordionItem="cdkAccordionItem"
-        class="example-accordion-item" tabindex="0" [attr.id]="'accordion-header-' + index"
-        [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + index">
+    <cdk-accordion-item
+        *ngFor="let accItem of accordionItems; let index = index;"
+        #accordionItem="cdkAccordionItem"
+        class="example-accordion-item"
+        role="button"
+        tabindex="0"
+        [attr.id]="'accordion-header-' + index"
+        [attr.aria-expanded]="accordionItem.expanded"
+        [attr.aria-controls]="'accordion-body-' + index"
+    >
         <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
-            {{ section.label === 'form' && accordionItem.expanded ? 'form general styles' : section.label }}
+            {{ !accordionItem.expanded
+                ? accItem.name
+                : accItem.name === 'Form styles'
+                ? 'Form General Styles'
+                : accItem.name
+            }}
             <span class="example-accordion-item-description">
                 {{ accordionItem.expanded ? 'close' : 'open' }}
             </span>
@@ -12,62 +24,33 @@
             class="example-accordion-item-body"
             [style.display]="accordionItem.expanded ? '' : 'none'"
             [attr.id]="'accordion-body-' + index">
-            <form
-                #form
-                [attr.id]="section.label"
-                (ngSubmit)="getEnteredProps(form)"
-            >
-                <mat-form-field class="example-full-width">
+            <form #form [attr.id]="accItem.name" (submit)="getEnteredProps()">
+                <mat-form-field
+                    *ngFor="let prop of (accItem.name === 'Form styles' ? formProperties : formFieldProperties); let first = first"
+                    [ngClass]="{ 'example-full-width': first, 'example-half-width': !first }">
                     <mat-label>
-                        {{ selectedElement['id'] | titlecase }}
+                        {{ prop.displayedFieldName }}
                     </mat-label>
-                    <input matInput [attr.placeholder]="selectedElement['id'] | titlecase"
-                        [attr.value]="selectedElement['id'] | titlecase">
+                    <input
+                        matInput
+                        *ngIf="!prop.options"
+                        [attr.placeholder]="prop.propertyName === 'placeholder' ? prop.value : null"
+                        [attr.type]="prop.suffix && prop.suffix !== 'RGB' ? 'number' : 'text'"
+                        [(ngModel)]="selectedStyles[accItem.name][prop.propertyName]"
+                        [name]="prop.propertyName"
+                    >
+                    <mat-select *ngIf="prop.options" [(ngModel)]="selectedStyles[accItem.name][prop.propertyName]" name="food">
+                        <mat-option *ngFor="let option of prop.options" [value]="option">
+                            {{option}}
+                        </mat-option>
+                    </mat-select>
+                    <span matSuffix *ngIf="prop.suffix">
+                        {{ prop.suffix }}
+                    </span>
                 </mat-form-field>
-                <ng-container
-                    *ngFor="let property of formFieldProperties"
-                >
-                    <mat-form-field
-                        class="example-half-width"
-                        *ngIf="!property.options"
-                    >
-                        <mat-label>
-                            {{property.displayedFieldName}}
-                        </mat-label>
-                        <input
-                            matInput
-                            [name]="property.propertyName"
-                            [attr.placeholder]="property.value ? property.value : 'none'"
-                            [attr.value]="property.value"
-                            [(ngModel)]="test[property.propertyName]"
-                        />
-                        <span *ngIf="property?.format">{{ property.format }}</span>
-                    </mat-form-field>
-                    <mat-form-field
-                        class="example-half-width"
-                        *ngIf="property.options"
-                    >
-                        <mat-label>{{ property.displayedFieldName }}</mat-label>
-                        <mat-select
-                            [(ngModel)]="test[property.propertyName]"
-                            [name]="property.propertyName"
-                        >
-                            <mat-option
-                                *ngFor="let option of property.options"
-                                [attr.value]="option"
-                            >
-                                {{test[property.propertyName]}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </ng-container>
-                <ng-container *ngIf="section.label === 'form-element'"></ng-container>
-                <input *ngIf="section.type === 'form-element'" type="checkbox" />
                 <button type="submit">Apply</button>
-                <button *ngIf="section.type === 'form-element'" type="button">Delete</button>
+                <button type="button">Delete</button>
             </form>
         </div>
     </cdk-accordion-item>
 </cdk-accordion>
-
-<!-- <select *ngIf="property.options">{{ property.displayedFieldName }}</select> -->

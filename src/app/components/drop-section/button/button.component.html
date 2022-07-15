@@ -1,9 +1,9 @@
 <button
-    id="button"
+    [id]="id"
     #button
-    (click)="onClick(button)"
     class="form-builder-element in-form"
     type="button"
+    (click)="sendId()"
 >
     button works!
 </button>

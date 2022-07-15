@@ -11,3 +11,8 @@ export const getElementDetails = createSelector(
     selectDropSectionFeature,
     (state) => state.elementDetails
 );
+
+export const getSelectedElement = (id: string) => createSelector(
+    getElementDetails,
+    (elementDetails) => elementDetails.find(el => el['id'] === id)
+)

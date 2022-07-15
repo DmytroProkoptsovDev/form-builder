@@ -1,9 +1,9 @@
 <label
     #checkbox
-    id="checkbox"
-    (click)="onClick(checkbox)"
+    [id]="id"
     class="form-builder-element"
+    (click)="sendId()"
 >
     checkbox-with-label works!
-    <input type="checkbox" />
+    <input type="checkbox"/>
 </label>
