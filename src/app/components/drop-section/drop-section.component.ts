@@ -1,11 +1,17 @@
+//libs
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, copyArrayItem } from '@angular/cdk/drag-drop';
+
+//NgRx instances
 import { Store } from '@ngrx/store';
-import { selectElement, setSelectedElement } from './drop-section.actions';
-import { IAppliedStyles } from '../accordion/accordion.actions';
+import { addNewField, setSelectedElement } from './drop-section.actions';
 import { getStylesToApply } from '../accordion/accordion.selectors';
 import { updateDrabableIds } from '../drag-section/drag-section.actions';
+
+// intrfaces and types
+import { IAppliedStyles } from '../accordion/accordion.actions';
 import { IDragable } from 'src/app/models/drabable.model';
+import { FORM_NODE, FORM_ELEMENT_NODE } from './drop-section.constants';
 
 const props = [
   'width',
@@ -25,12 +31,16 @@ export class DropSectionComponent implements OnInit {
   public formDropContainer: IDragable[] = [];
   public choosenStyles: IAppliedStyles = {};
 
+  public formNode: string = FORM_NODE;
+  public formElementNode: string = FORM_ELEMENT_NODE;
+
   constructor(private store: Store) {
     this.store.select(getStylesToApply).subscribe(styles => this.choosenStyles = styles);
   }
   ngOnInit(): void {}
   
   defineElement = (element: any) => {
+    console.log('here');
     const computedCSS = window.getComputedStyle(element, ':placeholder');
     const nonCSSProps = {
       'text-content': element.textContent ? element.textContent : element.id,
@@ -51,7 +61,7 @@ export class DropSectionComponent implements OnInit {
       ...nonCSSProps
     };
 
-    this.store.dispatch(selectElement({ payload: elementDetails }));
+    this.store.dispatch(addNewField({ payload: elementDetails }));
   }
   drop(event: CdkDragDrop<IDragable[]>) {
     if (event.previousContainer === event.container) {
@@ -71,8 +81,10 @@ export class DropSectionComponent implements OnInit {
 
     return Number.isNaN(cleared) ? str : cleared.toFixed(0);
   }
-  getId = (id: string) => {
-    console.log(id);
+  selectElement = (id: string) => {
     this.store.dispatch(setSelectedElement({ id }))
+  }
+  selectForm = (type: string | undefined) => {
+    console.log(type);
   }
 }

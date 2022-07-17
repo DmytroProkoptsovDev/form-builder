@@ -1,4 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { IElementProperty } from './drop-section.actions';
 import { IState } from './drop.section.reducer';
 
 interface AppState {
@@ -7,12 +8,17 @@ interface AppState {
 
 const selectDropSectionFeature = createFeatureSelector<IState>('dropSection');
 
-export const getElementDetails = createSelector(
+export const getAllDroppedFields = createSelector(
     selectDropSectionFeature,
-    (state) => state.elementDetails
+    (state) => state.elementList
 );
 
-export const getSelectedElement = (id: string) => createSelector(
-    getElementDetails,
-    (elementDetails) => elementDetails.find(el => el['id'] === id)
+export const getSelectedElement = createSelector(
+    selectDropSectionFeature,
+    (state) => state.selectedElement
+)
+export const getSelectedFieldProps = createSelector(
+    getAllDroppedFields,
+    getSelectedElement,
+    (elementList, selectedElement) => elementList.find(el => el['id'] === selectedElement)
 )

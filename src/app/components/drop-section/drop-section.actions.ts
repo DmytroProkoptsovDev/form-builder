@@ -6,15 +6,15 @@ export interface IElementProperty {
 }
 
 
-export const addNewFormField = createAction(
-    '[Drop section] add new form field',
+export const addNewField = createAction(
+    '[Drop section] add new field',
     props<{payload: IElementProperty}>()
 );
 
-export const selectElement = createAction(
-    '[Drop section] Select element',
-    props<{payload: IElementProperty}>()
-);
+// export const selectElement = createAction(
+//     '[Drop section] Select element',
+//     props<{payload: IElementProperty}>()
+// );
 
 export const setSelectedElement = createAction(
     '[Drop section] Set selected element',

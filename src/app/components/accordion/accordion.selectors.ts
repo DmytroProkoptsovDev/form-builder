@@ -16,3 +16,7 @@ export const getStylesToApply = createSelector(
     selectAccordionFeature,
     (state) => state.stylesToApply,
 );
+export const getAccordionItems = createSelector(
+    selectAccordionFeature,
+    (state) => state.accordionItems
+)

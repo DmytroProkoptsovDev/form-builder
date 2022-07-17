@@ -1,9 +1,12 @@
 <app-section>
     <form
+        #form
         id="formDropContainer"
         cdkDropList
         [cdkDropListData]="formDropContainer"
         (cdkDropListDropped)="drop($event)"
+        [attr.data-type]="formNode"
+        (click)="selectForm(form.dataset?.['type'])"
     >
         <h3 class="form-builder-element">Form label</h3>
         <ng-container
@@ -11,40 +14,45 @@
         >
             <app-input
                 [id]="formElement.id"
-                [onClick]="getId"
+                [onClick]="selectElement"
                 [onViewInit]="defineElement"
                 cdkDrag
                 *ngIf="formElement.type === 'input'"
                 [ngStyle]="choosenStyles"
+                [attr.data-type]="formElementNode"
             ></app-input>
             <app-button
                 name="button"
                 [id]="formElement.id"
-                [onClick]="getId"
+                [onClick]="selectElement"
                 [onViewInit]="defineElement" 
                 cdkDrag
                 *ngIf="formElement.type === 'button'"
+                [attr.data-type]="formElementNode"
             ></app-button>
             <app-textarea
                 [id]="formElement.id"
-                [onClick]="getId"
+                [onClick]="selectElement"
                 [onViewInit]="defineElement" 
                 cdkDrag
                 *ngIf="formElement.type === 'textarea'"
+                [attr.data-type]="formElementNode"
             ></app-textarea>
             <app-select-option
                 [id]="formElement.id"
-                [onClick]="getId"
+                [onClick]="selectElement"
                 [onViewInit]="defineElement" 
                 cdkDrag 
                 *ngIf="formElement.type === 'select'"
+                [attr.data-type]="formElementNode"
             ></app-select-option>
             <app-checkbox-with-label
                 [id]="formElement.id"
-                [onClick]="getId"
+                [onClick]="selectElement"
                 [onViewInit]="defineElement"
                 cdkDrag
                 *ngIf="formElement.type === 'checkbox'"
+                [attr.data-type]="formElementNode"
             ></app-checkbox-with-label>
         </ng-container>
 

@@ -2,17 +2,19 @@
     <cdk-accordion-item
         *ngFor="let accItem of accordionItems; let index = index;"
         #accordionItem="cdkAccordionItem"
+        #item
         class="example-accordion-item"
         role="button"
         tabindex="0"
-        [attr.id]="'accordion-header-' + index"
+        [id]="accItem.type"
         [attr.aria-expanded]="accordionItem.expanded"
         [attr.aria-controls]="'accordion-body-' + index"
+        (click)="setExpandedItem(item.id)"
     >
         <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
             {{ !accordionItem.expanded
                 ? accItem.name
-                : accItem.name === 'Form styles'
+                : accItem.type === formNode
                 ? 'Form General Styles'
                 : accItem.name
             }}
@@ -23,10 +25,15 @@
         <div
             class="example-accordion-item-body"
             [style.display]="accordionItem.expanded ? '' : 'none'"
-            [attr.id]="'accordion-body-' + index">
-            <form #form [attr.id]="accItem.name" (submit)="getEnteredProps()">
+            [attr.id]="'accordion-body-' + index"
+        >
+            <form
+                #form
+                [attr.id]="accItem.type"
+                (submit)="applyEnteredStyles(form.id)"
+            >
                 <mat-form-field
-                    *ngFor="let prop of (accItem.name === 'Form styles' ? formProperties : formFieldProperties); let first = first"
+                    *ngFor="let prop of (accItem.type === formNode ? formProperties : formFieldProperties); let first = first"
                     [ngClass]="{ 'example-full-width': first, 'example-half-width': !first }">
                     <mat-label>
                         {{ prop.displayedFieldName }}
@@ -36,11 +43,20 @@
                         *ngIf="!prop.options"
                         [attr.placeholder]="prop.propertyName === 'placeholder' ? prop.value : null"
                         [attr.type]="prop.suffix && prop.suffix !== 'RGB' ? 'number' : 'text'"
-                        [(ngModel)]="selectedStyles[accItem.name][prop.propertyName]"
+                        [value]="selectedStyles[accItem.type]?.[prop.propertyName] || ''"
+                        (input)="onInputChange($event)"
                         [name]="prop.propertyName"
                     >
-                    <mat-select *ngIf="prop.options" [(ngModel)]="selectedStyles[accItem.name][prop.propertyName]" name="food">
-                        <mat-option *ngFor="let option of prop.options" [value]="option">
+                    <mat-select
+                        *ngIf="prop.options"
+                        [value]="selectedStyles[accItem.type]?.[prop.propertyName] || ''"
+                        (valueChange)="onInputChange($event)"
+                        [attr.data-name]="prop.propertyName"
+                    >
+                        <mat-option
+                            *ngFor="let option of prop.options"
+                            [value]="option"
+                        >
                             {{option}}
                         </mat-option>
                     </mat-select>
@@ -54,3 +70,4 @@
         </div>
     </cdk-accordion-item>
 </cdk-accordion>
+<!-- [value]="accItem.type === formNode ? (fs[prop.propertyName] || '') : (fe[prop.proppertyName] || '')" -->

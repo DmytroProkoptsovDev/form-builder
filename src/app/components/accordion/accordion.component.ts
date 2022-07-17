@@ -1,14 +1,23 @@
-import { setAppliedStyles } from './accordion.actions';
-import { getDefaultForm, getDefaultFormFields } from './accordion.selectors';
+// libs
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { FormControl } from '@angular/forms';
+
+// NgRx instances
+import { setAppliedStyles } from './accordion.actions';
+import { getAccordionItems, getDefaultForm, getDefaultFormFields } from './accordion.selectors';
+import { getSelectedFieldProps } from './../drop-section/drop-section.selectors';
+
+// interfaces and types
 import { IElementFieldProperties } from 'src/app/constants/accordion-data';
 import { IElementProperty } from './../drop-section/drop-section.actions';
-import { getElementDetails } from './../drop-section/drop-section.selectors';
+import { IAccordionItem } from './accordion.reducers';
+import { FORM_NODE, FORM_ELEMENT_NODE } from '../drop-section/drop-section.constants';
 
-interface ISelectedStyles {
+type TElementProps = IElementProperty | undefined;
+interface ISlectedStyles {
   [key: string]: {
-    [key: string]: string
+    [key: string]: IElementProperty
   }
 }
 
@@ -19,36 +28,59 @@ interface ISelectedStyles {
 })
 export class AccordionComponent implements OnInit {
 
-  expandedIndex = 0;
-  selectedElement: IElementProperty = {};
-  isNoElementSelected: boolean = Object.keys(this.selectedElement).length === 0;
+  public expanded: string = '';
+  public formProperties!: any[];
+  public formFieldProperties!: any[];
+  public accordionItems!: IAccordionItem[];
+  public selectedStyles: ISlectedStyles = {};
+  fs: any = {}
+  fe: any = {}
 
-  formProperties: IElementFieldProperties[] = [];
-  formFieldProperties: IElementFieldProperties[] = [];
-  accordionItems = [{ name: 'Form styles' }, { name: 'Field styles' }]
-  selectedStyles: ISelectedStyles = {
-    'Form styles': {},
-    'Field styles': {}
-  };
+  public formNode: string = FORM_NODE;
+  public formElementNode: string = FORM_ELEMENT_NODE;
 
   constructor(private store: Store) {
-    this.store.select(getElementDetails).subscribe(data => this.handleElementSelect(data));
+    this.store.select(getAccordionItems).subscribe(items => this.accordionItems = items);
     this.store.select(getDefaultForm).subscribe(defaultForm => this.formProperties = defaultForm);
-    this.store.select(getDefaultFormFields).subscribe(defaultFormFields => this.formFieldProperties = defaultFormFields)
+    this.store.select(getDefaultFormFields).subscribe(defaultFormFields => this.formFieldProperties = defaultFormFields);
+    // this.store.select(getSelectedFieldProps).subscribe(fieldProps => this.fieldStyles = fieldProps);
   }
-
   ngOnInit(): void {
   }
-  handleElementSelect(data: any) {
-    const [a] = data;
-    this.selectedStyles = {
-      ...this.selectedStyles,
-      'Field styles': {
-          ...a
-        }
-      }
+
+  applyEnteredStyles(id: string) {
+    console.log(this.selectedStyles[id]);
+
+      // this.store.dispatch(setAppliedStyles({payload: this.selectedStyles$}));
   }
-  getEnteredProps() {
-      this.store.dispatch(setAppliedStyles({payload: this.selectedStyles}));
+  onInputChange(event: any) {
+    console.log(event);
+    //   this.selectedStyles = {
+    //   ...this.selectedStyles,
+    //   [this.expanded]: {
+    //     ...this.selectedStyles[this.expanded],
+    //     [event.target.name]: event.target.value
+    //   }
+    // }
+  }
+  // onInputChange(event: any) {
+
+  // if(this.expanded === this.formNode) {
+  //   this.fs = {
+  //     ...this.fs,
+  //     [event.target.name]: event.target.value
+  //     }
+  //   }
+
+  // if(this.expanded === this.formElementNode) {
+  //   this.fe = {
+  //     ...this.fe,
+  //     [event.target.name]: event.target.value
+  //     }
+  //   }
+  // }
+
+  setExpandedItem(itemId: string) {
+    this.expanded = itemId;
   }
 }
