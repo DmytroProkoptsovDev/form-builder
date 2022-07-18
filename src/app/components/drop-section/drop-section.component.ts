@@ -43,7 +43,7 @@ export class DropSectionComponent implements OnInit {
     console.log('here');
     const computedCSS = window.getComputedStyle(element, ':placeholder');
     const nonCSSProps = {
-      'text-content': element.textContent ? element.textContent : element.id,
+      'text-content': element.textContent ? element.textContent : '',
       placeholder: element.placeholder ?? '',
       id: element.id,
     }

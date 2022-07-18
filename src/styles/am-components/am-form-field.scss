@@ -1,0 +1,39 @@
+mat-form-field {
+    &.mat-form-field {
+        display: inline-block;
+        width: 185px;
+        border-radius: 5px 5px 0px 0px;
+        background-color: $clr-bg-field;
+
+        &:first-child {
+            width: 100%;
+            margin-right: 0;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+        &:nth-child(even) {
+            margin-right: 20px;
+        }
+
+        & .mat-form-field-infix {
+            padding: 15px 15px 17px 15px;
+
+            & .mat-form-field-label {
+                left: 15px;
+            }
+        }
+    }
+
+    & mat-label {
+            color: $clr-text-main;
+        }
+    & .mat-form-field-wrapper {
+        & .mat-form-field-underline {
+            & .mat-form-field-ripple {
+                background-color: $clr-accent-submain;
+            }
+        }
+    }
+}

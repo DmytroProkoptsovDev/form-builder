@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -20,6 +20,7 @@ import { CheckboxWithLabelComponent } from './components/drop-section/checkbox-w
 import { SelectOptionComponent } from './components/drop-section/select-option/select-option.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
 import { AddComponentDirective } from './directives/add-component.directive';
+import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { StoreModule } from '@ngrx/store';
@@ -29,6 +30,7 @@ import { environment } from '../environments/environment';
 import { NormalizeCasePipe } from './pipes/normalize-case/normalize-case.pipe';
 import { accordionReducer } from './components/accordion/accordion.reducers';
 import { dragSectionReducer } from './components/drag-section/drag-section.reducers';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,9 @@ import { dragSectionReducer } from './components/drag-section/drag-section.reduc
     TextFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
     StoreModule.forRoot({
       dropSection: dropSectionReducer,
       accordion: accordionReducer,

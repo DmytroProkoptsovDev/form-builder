@@ -1,0 +1,26 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 155px;
+    height: 30px;
+
+    font-family: inherit;
+    font-weight: $fw-400;
+    font-size: $fs-content;
+    text-transform: capitalize;
+
+    border: none;
+    border-radius: 4px;
+
+    color: $clr-text-main;
+    background-color: $clr-bg-field;
+    cursor: pointer;
+    
+    transition: background-color 250ms ease-in;
+
+    &:hover {
+        background-color: $clr-hovered;
+    }
+}

@@ -1,5 +1,4 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { IElementProperty } from './drop-section.actions';
 import { IState } from './drop.section.reducer';
 
 interface AppState {

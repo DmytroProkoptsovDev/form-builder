@@ -16,7 +16,7 @@ export class StylesPickerService {
     { fieldName: 'label', propertyName: 'text-content', type: 'input' },
     { fieldName: 'color', propertyName: 'color', type: 'input' },
     { fieldName: 'background color', propertyName: 'background-color', type: 'input' },
-    { fieldName: 'border type', propertyName: 'border-type', type: 'select' },
+    { fieldName: 'border type', propertyName: 'border-style', type: 'select' },
     { fieldName: 'border color', propertyName: 'border-color', type: 'input' },
   ];
   public fieldStylesFormFields = [
@@ -26,8 +26,8 @@ export class StylesPickerService {
     { fieldName: 'font size', propertyName: 'font-size', type: 'input' },
     { fieldName: 'font weight', propertyName: 'font-weight', type: 'select' },
     { fieldName: 'color', propertyName: 'color', type: 'input' },
-    { fieldName: 'border type', propertyName: 'border-type', type: 'select' },
-    { fieldName: 'required', propertyName: 'required', type: 'input' },
+    { fieldName: 'border type', propertyName: 'border-style', type: 'select' },
+    { fieldName: 'required', propertyName: 'required', type: 'checkbox' },
   ]
 
   constructor() {}
