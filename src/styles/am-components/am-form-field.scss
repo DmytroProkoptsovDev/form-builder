@@ -50,6 +50,9 @@ mat-form-field {
                 color: $clr-accent-submain;
             }
         }
+        .mat-select-value-text {
+            font-size: $fs-content;
+        } 
     }
     .mat-form-field.mat-form-field-hide-placeholder {
         .mat-form-field-infix {

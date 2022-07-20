@@ -102,11 +102,9 @@ export class AccordionComponent implements OnInit {
   }
   onSubmit(id: string) {
     const { value } = this.dictionary[id].formGroup;
-    this.addSuffix(id, value);
-    const withId = {
-      ...value,
-      id: this.selectedFieldId
-    }
+    const suffixed = this.addSuffix(id, value);
+    const withId = { ...suffixed, id: this.selectedFieldId };
+    
     const action = id === this.fieldNode
       ? setAppliedFieldStyles({ payload: withId })
       : setAppliedFormStyles({ payload: value});
@@ -128,7 +126,7 @@ export class AccordionComponent implements OnInit {
     const fields = this.dictionary?.[formName]?.formFields;
     const suffixed = fields.reduce((acc: {[key: string]: string}, { suffix, propertyName }: IField) => {
       const propertyValue = value[propertyName];
-      if (suffix) {
+      if (suffix === 'px') {
         acc[propertyName] = propertyValue + suffix;
 
         return acc;
@@ -137,7 +135,9 @@ export class AccordionComponent implements OnInit {
       acc[propertyName] = propertyValue;
       return acc;
     }, {})
-  }
+
+    return suffixed;
+}
   log(i: any) {
   }
 }

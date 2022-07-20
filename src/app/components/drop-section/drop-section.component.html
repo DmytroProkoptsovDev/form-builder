@@ -6,11 +6,13 @@
         [cdkDropListData]="formDropContainer"
         (cdkDropListDropped)="drop($event)"
         [name]="formNode"
+        class="drop-section-form"
     >
-        <h3 #heading class="form-builder-element">Form label</h3>
-        <ng-container
-            *ngFor="let formElement of formDropContainer"
-        >
+        <h3 #heading class="form-builder-element no-border">Form label</h3>
+        <div class="drop-section-wrapper">
+            <ng-container
+                *ngFor="let formElement of formDropContainer"
+            >
             <app-input
                 cdkDrag
                 [elementName]="formElement.type"
@@ -56,13 +58,14 @@
                 *ngIf="formElement.type === 'checkbox'"
                 [attr.data-type]="formElementNode"
             ></app-checkbox-with-label>
-        </ng-container>
+            </ng-container>
 
-        <button
-            type="submit"
-            *ngIf="formDropContainer.length"
-        >
-            Save form
-        </button>
+            <button
+                type="submit"
+                *ngIf="formDropContainer.length"
+            >
+                Save form
+            </button>
+        </div>
     </form>
 </app-section>
