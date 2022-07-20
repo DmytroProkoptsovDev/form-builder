@@ -1,17 +1,18 @@
 //libs
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, copyArrayItem } from '@angular/cdk/drag-drop';
 
 //NgRx instances
 import { Store } from '@ngrx/store';
-import { addNewField, setSelectedElement } from './drop-section.actions';
-import { getStylesToApply } from '../accordion/accordion.selectors';
+import { addNewField, IElementProperty, initFormStyles, setSelectedElement } from './drop-section.actions';
 import { updateDrabableIds } from '../drag-section/drag-section.actions';
 
 // intrfaces and types
 import { IAppliedStyles } from '../accordion/accordion.actions';
 import { IDragable } from 'src/app/models/drabable.model';
 import { FORM_NODE, FORM_ELEMENT_NODE } from './drop-section.constants';
+import { getFormStylesToApply } from '../accordion/accordion.selectors';
+import { PropertySetterService } from 'src/app/services/property-setter/property-setter.service';
 
 const props = [
   'width',
@@ -27,25 +28,43 @@ const props = [
   templateUrl: './drop-section.component.html',
   styleUrls: ['./drop-section.component.scss']
 })
-export class DropSectionComponent implements OnInit {
+export class DropSectionComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('form') formRef!: ElementRef;
+
   public formDropContainer: IDragable[] = [];
-  public choosenStyles: IAppliedStyles = {};
+  public userCustomStyles: IAppliedStyles = {};
 
   public formNode: string = FORM_NODE;
   public formElementNode: string = FORM_ELEMENT_NODE;
 
-  constructor(private store: Store) {
-    this.store.select(getStylesToApply).subscribe(styles => this.choosenStyles = styles);
+  constructor(
+    private store: Store,
+    private propertyService: PropertySetterService
+    ) {}
+  ngOnInit(): void {
+    this.store.select(getFormStylesToApply).subscribe(formStyles => {
+      this.propertyService
+      .setProps(formStyles)
+      .setRef(this.formRef)
+      .applyAllProperties();
+    });
   }
-  ngOnInit(): void {}
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      const { nativeElement } = this.formRef;
+
+      this.defineElement(nativeElement, nativeElement.name);
+    })
+  }
   
-  defineElement = (element: any) => {
-    console.log('here');
+  defineElement = (element: any, name: string) => {
     const computedCSS = window.getComputedStyle(element, ':placeholder');
     const nonCSSProps = {
-      'text-content': element.textContent ? element.textContent : '',
-      placeholder: element.placeholder ?? '',
-      id: element.id,
+      textContent: element?.textContent ? element.textContent.trim() : '',
+      placeholder: element?.placeholder?.trim() ?? '',
+      id: element?.id,
+      name,
     }
     const cssProps = props.reduce((obj: any, prop: string) => {
       const cssPropValue = computedCSS.getPropertyValue(prop);
@@ -61,7 +80,9 @@ export class DropSectionComponent implements OnInit {
       ...nonCSSProps
     };
 
-    this.store.dispatch(addNewField({ payload: elementDetails }));
+    name === this.formNode
+      ? this.store.dispatch(initFormStyles({ payload: elementDetails }))
+      : this.store.dispatch(addNewField({ payload: elementDetails }));
   }
   drop(event: CdkDragDrop<IDragable[]>) {
     if (event.previousContainer === event.container) {
@@ -83,8 +104,5 @@ export class DropSectionComponent implements OnInit {
   }
   selectElement = (id: string) => {
     this.store.dispatch(setSelectedElement({ id }))
-  }
-  selectForm = (type: string | undefined) => {
-    console.log(type);
   }
 }

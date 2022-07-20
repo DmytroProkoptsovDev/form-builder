@@ -31,6 +31,7 @@ import { NormalizeCasePipe } from './pipes/normalize-case/normalize-case.pipe';
 import { accordionReducer } from './components/accordion/accordion.reducers';
 import { dragSectionReducer } from './components/drag-section/drag-section.reducers';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ToStringPipe } from './pipes/to-string/to-string.pipe';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     AccordionComponent,
     AddComponentDirective,
     NormalizeCasePipe,
+    ToStringPipe,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +71,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
-  providers: [],
+  providers: [ToStringPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

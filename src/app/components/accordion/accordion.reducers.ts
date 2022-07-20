@@ -1,7 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { formProps, formFieldProps, IElementFieldProperties } from '../../constants/accordion-data';
 import { FORM_ELEMENT_NODE, FORM_NODE } from "../drop-section/drop-section.constants";
-import { setAppliedStyles } from './accordion.actions';
+import { IAppliedStyles, setAppliedFieldStyles, setAppliedFormStyles } from './accordion.actions';
 
 export interface IAccordionItem {
     name: string,
@@ -11,25 +11,48 @@ export interface IAccordionItem {
 export interface IAccrdionState {
     defaultForm: IElementFieldProperties[];
     defaultFormFields: IElementFieldProperties[];
-    stylesToApply: any;
+    fieldsStyles: any;
+    formStyles: any;
     accordionItems: IAccordionItem[];
 }
 
 const initialState = {
     defaultForm: formProps,
     defaultFormFields: formFieldProps,
-    stylesToApply: <any>[],
+    fieldsStyles: <any>[],
+    formStyles: {},
     accordionItems: [
         { name: 'Form styles', type: FORM_NODE},
         { name: 'Field styles', type: FORM_ELEMENT_NODE}
     ]
 }
 
-
 export const accordionReducer = createReducer(
     initialState,
-    on(setAppliedStyles, (state, { payload }) => ({
+    on(setAppliedFieldStyles, (state, { payload }) => {
+        if (!state.fieldsStyles.length) {
+            return { ...state, fieldsStyles: [...state.fieldsStyles, payload] }
+        }
+
+        const copy = [...state.fieldsStyles];
+        
+        state.fieldsStyles.forEach((field: IAppliedStyles, index: number) => {
+            if (field['id'] !== payload['id']) {
+                copy.push(payload);
+
+            } else {
+                const isUpdated = JSON.stringify(payload) !== JSON.stringify(field);
+                if (isUpdated) copy[index] = payload;
+            }
+        });
+        
+        return {
+            ...state,
+            fieldsStyles: copy
+        }
+    }),
+    on(setAppliedFormStyles, (state, { payload }) => ({
         ...state,
-        stylesToApply: [...state.stylesToApply, payload]
-    }))
+        formStyles: { ...payload }
+    })),
 )

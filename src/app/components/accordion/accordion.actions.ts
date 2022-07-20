@@ -5,7 +5,11 @@ export interface IAppliedStyles {
     [key: string]: {[key: string]: string};
 }
 
-export const setAppliedStyles = createAction(
-    '[Accordion] set styles to apply',
+export const setAppliedFieldStyles = createAction(
+    '[Accordion] Set field styles to apply',
+    props<{payload: IAppliedStyles}>()
+);
+export const setAppliedFormStyles = createAction(
+    '[Accordion] Set form styles to apply',
     props<{payload: IAppliedStyles}>()
 );

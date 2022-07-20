@@ -1,4 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { PropertySetterService } from 'src/app/services/property-setter/property-setter.service';
+import { getFieldStylesToApply } from '../../accordion/accordion.selectors';
 
 @Component({
   selector: 'app-checkbox-with-label',
@@ -6,20 +9,31 @@ import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '
   styleUrls: ['./checkbox-with-label.component.scss']
 })
 export class CheckboxWithLabelComponent implements OnInit, AfterViewInit {
-  @Input() onClick: (id: any) => void = () => { };
-  @Input() onViewInit: (element: any) => void = () => { };
-  @Input() id: string = '';
+  @Input() onClick!: (id: any) => void;
+  @Input() onViewInit!: (element: any, name: string) => void;
+  @Input() elementName!: string;
+  @Input() id!: string;
 
   @ViewChild('checkbox') checkboxRef!: ElementRef;
 
-  constructor() { }
+  constructor(
+    private store: Store,
+    private propertyService: PropertySetterService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.store.select(getFieldStylesToApply(this.id)).subscribe(styles => {
+      this.propertyService
+        .setProps(styles)
+        .setRef(this.checkboxRef)
+        .applyAllProperties();
+    });
+  }
   ngAfterViewInit(): void {
     setTimeout(() => {
       const { nativeElement } = this.checkboxRef;
 
-      this.onViewInit(nativeElement)
+      this.onViewInit(nativeElement, this.elementName)
   });
   }
   sendId() {

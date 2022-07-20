@@ -21,3 +21,7 @@ export const getSelectedFieldProps = createSelector(
     getSelectedElement,
     (elementList, selectedElement) => elementList.find(el => el['id'] === selectedElement)
 )
+export const getFormStyles = createSelector(
+    selectDropSectionFeature,
+    (state) => state.formStyles,
+)

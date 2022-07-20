@@ -1,14 +1,12 @@
 <cdk-accordion class="example-accordion">
     <cdk-accordion-item
         #accordionItem="cdkAccordionItem"
-        #item
         *ngFor="let element of accordionElems; let index = index"
         class="example-accordion-item"
         role="button"
         tabindex="0"
         [attr.id]="'accordion-header-' + index"
         [attr.aria-expanded]="accordionItem.expanded"
-        (click)="setExpandedItem(item.id)"
     >
         <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
             <span *ngIf="!accordionItem.expanded">
@@ -37,15 +35,36 @@
                 >
                     <mat-form-field
                         *ngIf="field.type === 'input'"
-                        [ngClass]="{ 'example-full-width': first, 'example-half-width': !first }"
+                        [ngClass]="{
+                            'example-full-width': selectedFieldName !== 'input' && first,
+                            'example-half-width': selectedFieldName === 'input' || !first
+                        }"
                     >
                         <mat-label>{{ field.fieldName | normalizeCase }}
                         </mat-label>
-                        <input matInput [formControlName]="field.propertyName" />
+                        <input
+                            matInput
+                            [formControlName]="field.propertyName"
+                        />
+                    </mat-form-field>
+                    <mat-form-field
+                        *ngIf="(selectedFieldName === 'input' || selectedFieldName === 'textarea') && field.fieldName === 'placeholder'"
+                        class="example-half-width"
+                    >
+                        <mat-label>{{ field.fieldName | normalizeCase }}
+                        </mat-label>
+                        <input
+                            matInput
+                            [attr.placeholder]="field.propertyName"
+                            [formControlName]="field.propertyName"
+                        />
                     </mat-form-field>
                     <mat-form-field
                         *ngIf="field.type === 'select'"
-                        [ngClass]="{ 'example-full-width': first, 'example-half-width': !first }"
+                        [ngClass]="{
+                            'example-full-width': first,
+                            'example-half-width': !first
+                        }"
                         appearance="fill"
                     >
                         <mat-select
@@ -70,10 +89,19 @@
                     </mat-checkbox>
                 </ng-container>
                 <div class="buttons-wrapper">
-                    <button type="submit" class="button">
-                        Apply
+                    <button
+                        type="submit"
+                        class="button"
+                        [attr.disabled]="element.node === fieldNode ? shouldDisableButtons : null"
+                    >
+                            Apply
                     </button>
-                    <button type="button" class="button">
+                    <button
+                        type="button"
+                        class="button"
+                        [attr.disabled]="element.node === fieldNode ? shouldDisableButtons : null"
+                        (click)="reset(element.node)"
+                    >
                         Delete
                     </button>
                 </div>
@@ -81,84 +109,3 @@
         </div>
     </cdk-accordion-item>
 </cdk-accordion>
-<!-- [value]="accItem.type === formNode ? (fs[prop.propertyName] || '') : (fe[prop.proppertyName] || '')" -->
-<!-- <cdk-accordion-item
-*ngFor="let accItem of accordionItems; let index = index;"
-#accordionItem="cdkAccordionItem"
-#item
-class="example-accordion-item"
-role="button"
-tabindex="0"
-[id]="accItem.type"
-[attr.aria-expanded]="accordionItem.expanded"
-[attr.aria-controls]="'accordion-body-' + index"
-(click)="setExpandedItem(item.id)"
->
-<div class="example-accordion-item-header" (click)="accordionItem.toggle()">
-    {{ !accordionItem.expanded
-        ? accItem.name
-        : accItem.type === formNode
-        ? 'Form General Styles'
-        : accItem.name
-    }}
-    <span class="example-accordion-item-description">
-        {{ accordionItem.expanded ? 'close' : 'open' }}
-    </span>
-</div>
-<div
-    class="example-accordion-item-body"
-    [style.display]="accordionItem.expanded ? '' : 'none'"
-    [attr.id]="'accordion-body-' + index"
->
-    <form
-        #form
-        [attr.id]="accItem.type"
-        (submit)="applyEnteredStyles(form.id)"
-    >
-        <mat-form-field
-            *ngFor="let prop of (accItem.type === formNode ? formProperties : formFieldProperties); let first = first"
-            [ngClass]="{ 'example-full-width': first, 'example-half-width': !first }">
-            <mat-label>
-                {{ prop.displayedFieldName }}
-            </mat-label>
-            <input
-                matInput
-                *ngIf="!prop.options"
-                [attr.placeholder]="prop.propertyName === 'placeholder' ? prop.value : null"
-                [attr.type]="prop.suffix && prop.suffix !== 'RGB' ? 'number' : 'text'"
-                [value]="selectedStyles[accItem.type]?.[prop.propertyName] || ''"
-                (input)="onInputChange($event)"
-                [name]="prop.propertyName"
-            >
-            <mat-select
-                *ngIf="prop.options"
-                [attr.data-name]="prop.propertyName"
-                (selectionChange)="a($event)"
-                [value]="selectedStyles[accItem.type]?.[prop.propertyName] || ''"
-            >
-                <mat-option
-                    *ngFor="let option of prop.options"
-                    [value]="option"
-                >
-                    {{option}}
-                </mat-option>
-            </mat-select>
-            <span matSuffix *ngIf="prop.suffix">
-                {{ prop.suffix }}
-            </span>
-        </mat-form-field>
-        <button
-            type="submit"
-            class="button"
-        >
-            Apply
-        </button>
-        <button
-            type="button"
-            class="button"
-        >
-            Delete
-        </button>
-    </form>
-</div>
-</cdk-accordion-item> -->

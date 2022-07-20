@@ -1,15 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
-import { IElementProperty, addNewField, setSelectedElement } from './drop-section.actions';
+import {
+    IElementProperty, addNewField,
+    setSelectedElement, initFormStyles
+} from './drop-section.actions';
 
 export interface IState {
-    elementDetails: IElementProperty[];
     elementList: IElementProperty[];
+    formStyles: IElementProperty;
     selectedElement: string;
 }
 
 export const initialState: IState = {
-    elementDetails: [],
     elementList: [],
+    formStyles: {},
     selectedElement: '',
 };
 
@@ -22,5 +25,9 @@ export const dropSectionReducer = createReducer(
     on(setSelectedElement, ((state, { id }) => ({
         ...state,
         selectedElement: id
-    })))
+    }))),
+    on(initFormStyles, (state, { payload }) => ({
+        ...state,
+        formStyles: { ...payload }
+    }))
 );

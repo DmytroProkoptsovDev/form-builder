@@ -13,14 +13,15 @@ type TFlag = typeof generalStylesFlag | typeof fieldStylesFlag
 })
 export class StylesPickerService {
   public generalStylesFormFileds = [
-    { fieldName: 'label', propertyName: 'text-content', type: 'input' },
+    { fieldName: 'label', propertyName: 'textContent', type: 'input' },
     { fieldName: 'color', propertyName: 'color', type: 'input' },
     { fieldName: 'background color', propertyName: 'background-color', type: 'input' },
     { fieldName: 'border type', propertyName: 'border-style', type: 'select' },
     { fieldName: 'border color', propertyName: 'border-color', type: 'input' },
   ];
   public fieldStylesFormFields = [
-    { fieldName: 'label', propertyName: 'text-content', type: 'input' },
+    { fieldName: 'label', propertyName: 'textContent', type: 'input' },
+    { fieldName: 'placeholder', propertyName: 'placeholder', type: 'placeholder' },
     { fieldName: 'width', propertyName: 'width', type: 'input' },
     { fieldName: 'height', propertyName: 'height', type: 'input' },
     { fieldName: 'font size', propertyName: 'font-size', type: 'input' },

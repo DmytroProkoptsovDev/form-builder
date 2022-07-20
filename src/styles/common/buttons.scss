@@ -20,7 +20,11 @@
     
     transition: background-color 250ms ease-in;
 
-    &:hover {
+    &:not(:disabled):hover {
         background-color: $clr-hovered;
+    }
+    &:disabled {
+        background-color: $clr-disabled;
+        cursor: not-allowed;
     }
 }

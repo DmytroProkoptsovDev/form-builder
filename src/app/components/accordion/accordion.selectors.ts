@@ -12,11 +12,23 @@ export const getDefaultFormFields = createSelector(
     selectAccordionFeature,
     (state) => state.defaultFormFields,
 );
-export const getStylesToApply = createSelector(
+export const getAllFiledStyles = createSelector(
     selectAccordionFeature,
-    (state) => state.stylesToApply,
+    (state) => state.fieldsStyles,
 );
+
+export const getFieldStylesToApply = (id: string) => createSelector(
+    getAllFiledStyles,
+    (allCustomStyles: {[key: string]: string}[]) => {
+        return allCustomStyles.find((field: {[key: string]: string }) => field['id'] === id);
+    }
+);
+
+export const getFormStylesToApply = createSelector(
+    selectAccordionFeature,
+    (state) => state.formStyles,
+)
 export const getAccordionItems = createSelector(
     selectAccordionFeature,
     (state) => state.accordionItems
-)
+);
