@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { IElementType } from 'src/app/models/actions.model';
 
 export interface IAppliedStyles {
-    [key: string]: {[key: string]: string};
+    [key: string]: string;
 }
 
 export const setAppliedFieldStyles = createAction(

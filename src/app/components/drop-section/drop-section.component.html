@@ -5,10 +5,9 @@
         cdkDropList
         [cdkDropListData]="formDropContainer"
         (cdkDropListDropped)="drop($event)"
-        [attr.data-type]="formNode"
         [name]="formNode"
     >
-        <h3 class="form-builder-element">Form label</h3>
+        <h3 #heading class="form-builder-element">Form label</h3>
         <ng-container
             *ngFor="let formElement of formDropContainer"
         >

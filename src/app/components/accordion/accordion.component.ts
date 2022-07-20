@@ -12,7 +12,7 @@ import { IElementProperty } from './../drop-section/drop-section.actions';
 import { FORM_NODE, FORM_ELEMENT_NODE } from '../drop-section/drop-section.constants';
 import { StylesPickerService } from 'src/app/services/styles-picker/styles-picker.service';
 import { IField } from 'src/app/models/form.model';
-import { IFormFieldsMetaDataDictionary } from 'src/app/models/dictionaries.model';
+import { IDefault, IFormFieldsMetaDataDictionary } from 'src/app/models/dictionaries.model';
 import { formFieldsMetaDataDictionary } from 'src/app/constants/forms-fields.constants';
 
 
@@ -57,13 +57,15 @@ export class AccordionComponent implements OnInit {
 
   public dictionary!: IDictionary;
   public fieldsMetaData: IFormFieldsMetaDataDictionary = formFieldsMetaDataDictionary;
+  
   public generalStylesFormFields!: IField[];
   public fieldStylesFormFields!: IField[];
-  public default!: {[key: string]: string};
+
+  public default: IDefault = {};
 
   constructor(
-    private store: Store,
-    private stylePicker: StylesPickerService
+      private store: Store,
+      private stylePicker: StylesPickerService
     ) {
     this.store.select(getSelectedFieldProps).subscribe(this.handleSelectedFieldStyles);
     this.store.select(getFormStyles).subscribe(this.handleFormStyles);
@@ -88,17 +90,19 @@ export class AccordionComponent implements OnInit {
 
     this.selectedFieldId = data?.['id'];
     this.selectedFieldName = data?.['name'];
-    this.default = data;
+    this.default[this.fieldNode] = data;
 
     fieldForm?.patchValue(data);
   }
   handleFormStyles = (formStyles: IElementProperty) => {
     const formStylesForm = this.dictionary?.[this.formNode]?.formGroup;
 
+    this.default[this.formNode] = formStyles;
     formStylesForm?.patchValue(formStyles);
   }
   onSubmit(id: string) {
     const { value } = this.dictionary[id].formGroup;
+    this.addSuffix(id, value);
     const withId = {
       ...value,
       id: this.selectedFieldId
@@ -110,6 +114,30 @@ export class AccordionComponent implements OnInit {
     this.store.dispatch(action);
   }
   reset(formName: string) {
-    this.dictionary?.[formName]?.formGroup.patchValue(this.default);
+    const styles = this.default[formName];
+    const isFieldStylesForm = formName === this.fieldNode;
+
+    const action = isFieldStylesForm
+      ? setAppliedFieldStyles({ payload: styles })
+      : setAppliedFormStyles({ payload: styles});
+
+    this.dictionary?.[formName]?.formGroup.patchValue(styles);
+    this.store.dispatch(action);
+  }
+  addSuffix(formName: string, value: any) {
+    const fields = this.dictionary?.[formName]?.formFields;
+    const suffixed = fields.reduce((acc: {[key: string]: string}, { suffix, propertyName }: IField) => {
+      const propertyValue = value[propertyName];
+      if (suffix) {
+        acc[propertyName] = propertyValue + suffix;
+
+        return acc;
+      }
+
+      acc[propertyName] = propertyValue;
+      return acc;
+    }, {})
+  }
+  log(i: any) {
   }
 }

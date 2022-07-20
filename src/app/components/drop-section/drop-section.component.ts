@@ -31,6 +31,7 @@ const props = [
 export class DropSectionComponent implements OnInit, AfterViewInit {
 
   @ViewChild('form') formRef!: ElementRef;
+  @ViewChild('heading') headingRef!: ElementRef;
 
   public formDropContainer: IDragable[] = [];
   public userCustomStyles: IAppliedStyles = {};
@@ -45,16 +46,18 @@ export class DropSectionComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.store.select(getFormStylesToApply).subscribe(formStyles => {
       this.propertyService
-      .setProps(formStyles)
-      .setRef(this.formRef)
-      .applyAllProperties();
+        .setProps(formStyles)
+        .setRef(this.headingRef)
+        .applyNonCSSProperties()
+        .setRef(this.formRef)
+        .applyCSSProperties();
     });
   }
   ngAfterViewInit(): void {
     setTimeout(() => {
-      const { nativeElement } = this.formRef;
+      const { nativeElement: form } = this.formRef;
 
-      this.defineElement(nativeElement, nativeElement.name);
+      this.defineElement(form, form.name);
     })
   }
   
@@ -85,6 +88,7 @@ export class DropSectionComponent implements OnInit, AfterViewInit {
       : this.store.dispatch(addNewField({ payload: elementDetails }));
   }
   drop(event: CdkDragDrop<IDragable[]>) {
+    console.log(this.formDropContainer);
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {

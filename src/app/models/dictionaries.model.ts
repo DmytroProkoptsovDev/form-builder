@@ -14,3 +14,9 @@ interface IFormFieldMeta {
 export interface IFormFieldsMetaDataDictionary {
     [key: string]: IFormFieldMeta
 }
+
+export interface IDefault {
+    [key: string]: {
+        [key: string]: string,
+    }
+}

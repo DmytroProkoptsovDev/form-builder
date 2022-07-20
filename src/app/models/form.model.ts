@@ -12,4 +12,5 @@ export interface IField {
     propertyName: string;
     fieldName: string;
     type: string;
+    suffix?: string;
 }

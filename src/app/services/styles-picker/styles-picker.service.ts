@@ -13,20 +13,20 @@ type TFlag = typeof generalStylesFlag | typeof fieldStylesFlag
 })
 export class StylesPickerService {
   public generalStylesFormFileds = [
-    { fieldName: 'label', propertyName: 'textContent', type: 'input' },
-    { fieldName: 'color', propertyName: 'color', type: 'input' },
-    { fieldName: 'background color', propertyName: 'background-color', type: 'input' },
+    { fieldName: 'label', propertyName: 'textContent', type: 'text' },
+    { fieldName: 'color', propertyName: 'color', type: 'color', suffix: 'RGB' },
+    { fieldName: 'background color', propertyName: 'background-color', type: 'color', suffix: 'RGB' },
     { fieldName: 'border type', propertyName: 'border-style', type: 'select' },
-    { fieldName: 'border color', propertyName: 'border-color', type: 'input' },
+    { fieldName: 'border color', propertyName: 'border-color', type: 'color', suffix: 'RBG' },
   ];
   public fieldStylesFormFields = [
-    { fieldName: 'label', propertyName: 'textContent', type: 'input' },
+    { fieldName: 'label', propertyName: 'textContent', type: 'text' },
     { fieldName: 'placeholder', propertyName: 'placeholder', type: 'placeholder' },
-    { fieldName: 'width', propertyName: 'width', type: 'input' },
-    { fieldName: 'height', propertyName: 'height', type: 'input' },
-    { fieldName: 'font size', propertyName: 'font-size', type: 'input' },
+    { fieldName: 'width', propertyName: 'width', type: 'number', suffix: 'px' },
+    { fieldName: 'height', propertyName: 'height', type: 'number', suffix: 'px' },
+    { fieldName: 'font size', propertyName: 'font-size', type: 'number', suffix: 'px' },
     { fieldName: 'font weight', propertyName: 'font-weight', type: 'select' },
-    { fieldName: 'color', propertyName: 'color', type: 'input' },
+    { fieldName: 'color', propertyName: 'color', type: 'color', suffix: 'RGB' },
     { fieldName: 'border type', propertyName: 'border-style', type: 'select' },
     { fieldName: 'required', propertyName: 'required', type: 'checkbox' },
   ]

@@ -1,26 +1,26 @@
-<cdk-accordion class="example-accordion">
+<cdk-accordion class="accordion">
     <cdk-accordion-item
         #accordionItem="cdkAccordionItem"
         *ngFor="let element of accordionElems; let index = index"
-        class="example-accordion-item"
+        class="accordion-item"
         role="button"
         tabindex="0"
         [attr.id]="'accordion-header-' + index"
         [attr.aria-expanded]="accordionItem.expanded"
     >
-        <div class="example-accordion-item-header" (click)="accordionItem.toggle()">
+        <div class="accordion-item-header" (click)="accordionItem.toggle()">
             <span *ngIf="!accordionItem.expanded">
                 {{ element.nameStatic | titlecase }}
             </span>
             <span *ngIf="accordionItem.expanded">
                 {{ (element.nameExpanded ? element.nameExpanded : element.nameStatic) | titlecase }}
             </span>
-            <span class="example-accordion-item-description">
+            <span class="accordion-item-description">
                 {{ accordionItem.expanded ? 'close' : 'open' }}
             </span>
         </div>
         <div
-            class="example-accordion-item-body"
+            class="accordion-item-body"
             [attr.id]="'accordion-body-' + index"
             [style.display]="accordionItem.expanded ? '' : 'none'"
         >
@@ -29,49 +29,96 @@
                 [attr.id]="element.node"
                 [formGroup]="dictionary[element.node].formGroup"
                 (ngSubmit)="onSubmit(form.id)"
+                class="form"
             >
                 <ng-container
                     *ngFor="let field of dictionary[element.node].formFields; let first = first"
                 >
+                    <!-- input text -->
                     <mat-form-field
-                        *ngIf="field.type === 'input'"
-                        [ngClass]="{
-                            'example-full-width': selectedFieldName !== 'input' && first,
-                            'example-half-width': selectedFieldName === 'input' || !first
-                        }"
+                        *ngIf="field.type === 'text'"
+                        class="form-field"
+                        [class.full-width]="selectedFieldName !== 'input' && first"
+                        [class.half-width]="selectedFieldName === 'input' || !first"
+                        appearance="fill"
+                    >
+                        <mat-label>{{ field.fieldName | normalizeCase }}</mat-label>
+                        <input
+                            matInput
+                            [formControlName]="field.propertyName"
+                            type="text"
+                        />
+                    </mat-form-field>
+
+                    <!-- color -->
+                    <mat-form-field
+                        *ngIf="field.type === 'color'"
+                        class="form-field"
+                        [class.full-width]="selectedFieldName !== 'input' && first"
+                        [class.half-width]="selectedFieldName === 'input' || !first"
+                        appearance="fill"
+                    >
+                        <mat-label>{{ field.fieldName | normalizeCase }}</mat-label>
+                        <input
+                            #input
+                            matInput
+                            [formControlName]="field.propertyName"
+                            type="color"
+                            (click)="log(input)"
+                        />
+                        <span matSuffix *ngIf="fieldsMetaData[element.node].suffix[field.propertyName]">
+                            {{ fieldsMetaData[element.node].suffix[field.propertyName] }}
+                        </span>
+                    </mat-form-field>
+
+                    <!-- number -->
+                    <mat-form-field
+                        *ngIf="field.type === 'number'"
+                        class="form-field"
+                        [class.full-width]="selectedFieldName !== 'input' && first"
+                        [class.half-width]="selectedFieldName === 'input' || !first"
+                        appearance="fill"
                     >
                         <mat-label>{{ field.fieldName | normalizeCase }}
                         </mat-label>
                         <input
                             matInput
                             [formControlName]="field.propertyName"
+                            type="number"
                         />
+                        <span matSuffix *ngIf="fieldsMetaData[element.node].suffix[field.propertyName]">
+                            {{ fieldsMetaData[element.node].suffix[field.propertyName] }}
+                        </span>
                     </mat-form-field>
+
+                    <!-- textarea and placeholder -->
                     <mat-form-field
-                        *ngIf="(selectedFieldName === 'input' || selectedFieldName === 'textarea') && field.fieldName === 'placeholder'"
-                        class="example-half-width"
+                        appearance="fill"
+                        *ngIf="field.type === 'placeholder' && (selectedFieldName === 'input' || selectedFieldName === 'textarea')"
+                        class="form-field half-width"
                     >
-                        <mat-label>{{ field.fieldName | normalizeCase }}
-                        </mat-label>
+                        <mat-label>{{ field.fieldName | normalizeCase }}</mat-label>
                         <input
                             matInput
                             [attr.placeholder]="field.propertyName"
                             [formControlName]="field.propertyName"
+                            type="text"
                         />
                     </mat-form-field>
+
+                    <!-- select -->
                     <mat-form-field
                         *ngIf="field.type === 'select'"
-                        [ngClass]="{
-                            'example-full-width': first,
-                            'example-half-width': !first
-                        }"
+                        class="form-field"
+                        [class.full-width]="selectedFieldName !== 'input' && first"
+                        [class.half-width]="selectedFieldName === 'input' || !first"
                         appearance="fill"
                     >
+                        <mat-label>{{ field.fieldName | normalizeCase }}</mat-label>
                         <mat-select
                             [formControlName]="field.propertyName"
                             [value]="field.propertyName"
                         >
-                            <mat-label>{{ field.propertyName }}</mat-label>
                             <mat-option
                                 *ngFor="let option of fieldsMetaData[element.node].options[field.propertyName]"
                                 [value]="option"
@@ -80,26 +127,29 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+
+                    <!-- chechbox -->
                     <mat-checkbox
                         *ngIf="field.type === 'checkbox'"
                         [formControlName]="field.propertyName"
-                        color="primary"
                     >
                         Required field
                     </mat-checkbox>
                 </ng-container>
+
+                    <!-- buttons -->
                 <div class="buttons-wrapper">
                     <button
                         type="submit"
                         class="button"
-                        [attr.disabled]="element.node === fieldNode ? shouldDisableButtons : null"
+                        [disabled]="element.node === fieldNode ? shouldDisableButtons : false"
                     >
                             Apply
                     </button>
                     <button
                         type="button"
                         class="button"
-                        [attr.disabled]="element.node === fieldNode ? shouldDisableButtons : null"
+                        [disabled]="element.node === fieldNode ? shouldDisableButtons : false"
                         (click)="reset(element.node)"
                     >
                         Delete

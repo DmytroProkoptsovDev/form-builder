@@ -1,39 +1,85 @@
 mat-form-field {
     &.mat-form-field {
         display: inline-block;
-        width: 185px;
         border-radius: 5px 5px 0px 0px;
-        background-color: $clr-bg-field;
-
-        &:first-child {
-            width: 100%;
-            margin-right: 0;
-        }
-
-        &:not(:last-child) {
-            margin-bottom: 20px;
-        }
-        &:nth-child(even) {
-            margin-right: 20px;
-        }
 
         & .mat-form-field-infix {
-            padding: 15px 15px 17px 15px;
+            padding: 15px 0px 17px 15px;
 
             & .mat-form-field-label {
+                top: 55%;
                 left: 15px;
             }
         }
     }
 
     & mat-label {
+            font-size: $fs-content;
             color: $clr-text-main;
         }
     & .mat-form-field-wrapper {
+        padding-bottom: 1.1111em;
+        background-color: $clr-bg-main;
+
+        & .mat-form-field-flex {
+            padding: 0;
+            background-color: $clr-bg-field;
+        }
+
+        & .mat-form-field-suffix {
+            margin-right: 15px;
+        }
+
         & .mat-form-field-underline {
             & .mat-form-field-ripple {
                 background-color: $clr-accent-submain;
             }
         }
+    }
+
+    & mat-select {
+        & .mat-select-trigger {
+            align-items: baseline;
+
+            & .mat-select-value {
+                color: $clr-text-main;
+            }
+        }
+        & .mat-select-arrow-wrapper {
+            & .mat-select-arrow {
+                color: $clr-accent-submain;
+            }
+        }
+    }
+    .mat-form-field.mat-form-field-hide-placeholder {
+        .mat-form-field-infix {
+          .mat-input-element::placeholder {
+            display: inline;
+          }
+        }
+      }
+}
+
+mat-checkbox {
+    margin-bottom: 20px;
+
+    & .mat-checkbox-layout{
+        align-items: center;
+
+        & .mat-checkbox-label {
+            line-height: 1;
+        }
+    }
+    & .mat-checkbox-inner-container {
+        & .mat-checkbox-frame {
+            border-color: $clr-accent-submain;
+        }
+        & .mat-checkbox-background {
+            background-color: transparent;
+        }
+    }
+
+    & .mat-checkbox-label {
+        font-size: $fs-content;
     }
 }
