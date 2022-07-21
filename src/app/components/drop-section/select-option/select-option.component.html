@@ -1,11 +1,31 @@
-<select
-    [id]="id"
-    #select
+<div
+    class="wrapper-drop-section"
+    [appToggleClass]="'selected'"
+    [condition]="isSelected"
     (click)="sendId()"
-    name="select"
-    class="form-builder-element in-form"
 >
-    <option value="value1">Значение 1</option>
-    <option value="value2" selected>Значение 2</option>
-    <option value="value3">Значение 3</option>
-</select>
+    <div
+        class="form-builder-element select align-start pl-16"
+    >
+        <select
+            [id]="id"
+            #select
+            name="select"
+            disabled
+        >
+            <option>
+                Select label
+            </option>
+            <option value="option1">
+                option 1
+            </option>
+            <option value="option2">
+                option 2
+            </option>
+            <option value="option3">
+                option 3
+            </option>
+        </select>
+        <span class="chevron-down"></span>
+    </div>
+</div>

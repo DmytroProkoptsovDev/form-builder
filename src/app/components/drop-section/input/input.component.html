@@ -1,7 +1,29 @@
-<input
-    [id]="id"
-    #input
+<div
+    class="wrapper-drop-section"
+    [appToggleClass]="'selected'"
+    [condition]="isSelected"
     (click)="sendId()"
-    class="form-builder-element in-form"
-    placeholder="input works!"
-/>
+>
+    <div
+        [id]="id"
+        #input
+        class="form-builder-element input-wrapper align-start"
+        name="input"
+        [ngStyle]="styles"
+    >
+        <label
+            [for]="id"
+            class="input-label pl-16"
+            [textContent]="styles?.textContent ?? 'Input label'"
+            [ngClass]="{'required': styles?.required}"
+        >
+            Input label
+        </label>
+        <input
+            [id]="id"
+            disabled
+            class="input pl-16"
+            [placeholder]="styles?.placeholder ?? 'Input placeholder'"
+        />
+    </div>
+</div>

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '
 import { Store } from '@ngrx/store';
 import { PropertySetterService } from 'src/app/services/property-setter/property-setter.service';
 import { getFieldStylesToApply } from '../../accordion/accordion.selectors';
+import { getSelectedElement } from '../drop-section.selectors';
 
 @Component({
   selector: 'app-textarea',
@@ -15,6 +16,10 @@ export class TextAreaComponent implements OnInit, AfterViewInit {
   @Input() id!: string;
 
   @ViewChild('textarea') textareaRef!: ElementRef;
+  
+  public isSelected!: boolean;
+  public styles!: any;
+  public textContent = { textContent: this.styles?.textContent }
 
   constructor(
     private store: Store,
@@ -23,10 +28,14 @@ export class TextAreaComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.store.select(getFieldStylesToApply(this.id)).subscribe(styles => {
-      this.propertyService
-        .setProps(styles)
-        .setRef(this.textareaRef)
-        .applyAllProperties();
+      this.styles = styles;
+      // this.propertyService
+      //   .setProps(styles)
+      //   .setRef(this.textareaRef)
+      //   .applyAllProperties();
+    });
+    this.store.select(getSelectedElement).subscribe(id => {
+      this.isSelected = id === this.id
     });
   }
   ngAfterViewInit(): void {

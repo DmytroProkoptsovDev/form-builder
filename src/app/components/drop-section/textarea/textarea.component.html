@@ -1,7 +1,28 @@
-<textarea
-    [id]="id"
-    #textarea
+<div
+    class="wrapper-drop-section"
+    [appToggleClass]="'selected'"
+    [condition]="isSelected"
     (click)="sendId()"
-    class="form-builder-element in-form"
-    placeholder="textarea works!"
-></textarea>
+>
+    <div
+        [id]="id"
+        #textarea
+        class="form-builder-element textarea-wrapper align-start"
+        [ngStyle]="styles"
+    >
+        <label
+            [for]="id"
+            [textContent]="styles?.textContent ?? 'Textarea label'"
+            [ngClass]="{'required': styles?.required}"
+            class="textarea-label pl-16"
+        >
+        </label>
+        <textarea
+            [id]="id"
+            class="textarea pl-16"
+            [placeholder]="styles?.placeholder ?? 'Textarea placeholder'"
+            [required]="styles?.required"
+            disabled
+        ></textarea>
+    </div>
+</div>

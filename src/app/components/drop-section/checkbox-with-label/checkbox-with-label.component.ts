@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '
 import { Store } from '@ngrx/store';
 import { PropertySetterService } from 'src/app/services/property-setter/property-setter.service';
 import { getFieldStylesToApply } from '../../accordion/accordion.selectors';
+import { getSelectedElement } from '../drop-section.selectors';
 
 @Component({
   selector: 'app-checkbox-with-label',
@@ -15,7 +16,10 @@ export class CheckboxWithLabelComponent implements OnInit, AfterViewInit {
   @Input() id!: string;
 
   @ViewChild('checkbox') checkboxRef!: ElementRef;
-
+  
+  public isSelected!: boolean;
+  public styles!: any;
+  
   constructor(
     private store: Store,
     private propertyService: PropertySetterService
@@ -23,10 +27,14 @@ export class CheckboxWithLabelComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.store.select(getFieldStylesToApply(this.id)).subscribe(styles => {
-      this.propertyService
-        .setProps(styles)
-        .setRef(this.checkboxRef)
-        .applyAllProperties();
+      this.styles = styles;
+      // this.propertyService
+      //   .setProps(styles)
+      //   .setRef(this.checkboxRef)
+      //   .applyAllProperties();
+    });
+    this.store.select(getSelectedElement).subscribe(id => {
+      this.isSelected = id === this.id
     });
   }
   ngAfterViewInit(): void {
@@ -37,6 +45,7 @@ export class CheckboxWithLabelComponent implements OnInit, AfterViewInit {
   });
   }
   sendId() {
+    console.log(this.id);
     this.onClick(this.id)
   }
 }

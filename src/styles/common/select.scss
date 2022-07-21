@@ -1,0 +1,46 @@
+  /* Custom Select wrapper */
+.select {
+    position: relative;
+    display: flex;
+    border-radius: 4px;
+    overflow: hidden;
+
+    & select {
+        appearance: none;
+        outline: 0;
+        border: 0;
+        box-shadow: none;
+        flex: 1;
+        text-align: center;
+        color: $clr-text-main;
+        background-color: $clr-bg-main;
+        background-image: none;
+        cursor: pointer;
+    }
+}
+
+.chevron-down {
+    position: absolute;
+    right: 15px;
+
+    width: 22px;
+    height: 22px;
+    border: 2px solid transparent;
+    border-radius: 100px;
+    transform: scale(1);
+    pointer-events: all;
+    
+    &::after {
+        content: "";
+        display: block;
+        box-sizing: border-box;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-bottom: 2px solid;
+        border-right: 2px solid;
+        transform: rotate(45deg);
+        left: 4px;
+        top: 2px;
+    }
+}

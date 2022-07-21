@@ -1,0 +1,21 @@
+// wrapper for form element
+.wrapper-drop-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 22px;
+    cursor: pointer;
+}
+
+// select curent element in drop section
+.selected {
+    position: relative;
+
+    &::after {
+        position: absolute;
+        inset: 0;
+        content: '';
+        background-color: $clr-selected;
+    }
+}

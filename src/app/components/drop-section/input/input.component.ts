@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '
 import { Store } from '@ngrx/store';
 import { PropertySetterService } from 'src/app/services/property-setter/property-setter.service';
 import { getFieldStylesToApply } from '../../accordion/accordion.selectors';
+import { getSelectedElement } from '../drop-section.selectors';
 
 @Component({
   selector: 'app-input',
@@ -16,6 +17,9 @@ export class InputComponent implements OnInit, AfterViewInit {
 
   @ViewChild('input') inputRef!: ElementRef;
 
+  public isSelected!: boolean;
+  public styles!: any;
+
   constructor(
     private store: Store,
     private propertyService: PropertySetterService
@@ -23,10 +27,14 @@ export class InputComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.store.select(getFieldStylesToApply(this.id)).subscribe(styles => {
-      this.propertyService
-        .setProps(styles)
-        .setRef(this.inputRef)
-        .applyAllProperties();
+      this.styles = styles;
+      // this.propertyService
+      //   .setProps(styles)
+      //   .setRef(this.inputRef)
+      //   .applyAllProperties();
+    });
+    this.store.select(getSelectedElement).subscribe(id => {
+      this.isSelected = id === this.id
     });
   }
   ngAfterViewInit(): void {

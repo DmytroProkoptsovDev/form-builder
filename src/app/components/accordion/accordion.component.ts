@@ -83,6 +83,7 @@ export class AccordionComponent implements OnInit {
   }
   ngOnInit(): void {}
   handleSelectedFieldStyles = (selectedFieldProps: IElementProperty | undefined) => {
+    console.log(selectedFieldProps);
     this.shouldDisableButtons = !Boolean(selectedFieldProps);
 
     const data = selectedFieldProps ?? {};

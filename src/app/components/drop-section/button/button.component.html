@@ -1,9 +1,17 @@
-<button
-    [id]="id"
-    #button
-    class="form-builder-element in-form"
-    type="button"
+<div
+    class="wrapper-drop-section"
+    [appToggleClass]="'selected'"
+    [condition]="isSelected"
     (click)="sendId()"
 >
-    button works!
-</button>
+    <button
+        type="submit"
+        [ngStyle]="styles"
+        [id]="id"
+        #button
+        class="form-builder-element"
+        name="button"
+    >
+        Button label
+    </button>
+</div>

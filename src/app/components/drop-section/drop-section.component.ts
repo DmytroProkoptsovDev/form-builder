@@ -34,10 +34,13 @@ export class DropSectionComponent implements OnInit, AfterViewInit {
   @ViewChild('heading') headingRef!: ElementRef;
 
   public formDropContainer: IDragable[] = [];
-  public userCustomStyles: IAppliedStyles = {};
-
+  public isSelected!: boolean;
+  
   public formNode: string = FORM_NODE;
   public formElementNode: string = FORM_ELEMENT_NODE;
+  
+  public formStyles!: any;
+
 
   constructor(
     private store: Store,
@@ -45,12 +48,13 @@ export class DropSectionComponent implements OnInit, AfterViewInit {
     ) {}
   ngOnInit(): void {
     this.store.select(getFormStylesToApply).subscribe(formStyles => {
-      this.propertyService
-        .setProps(formStyles)
-        .setRef(this.headingRef)
-        .applyNonCSSProperties()
-        .setRef(this.formRef)
-        .applyCSSProperties();
+      this.formStyles = formStyles
+      // this.propertyService
+      //   .setProps(formStyles)
+      //   .setRef(this.headingRef)
+      //   .applyNonCSSProperties()
+      //   .setRef(this.formRef)
+      //   .applyCSSProperties();
     });
   }
   ngAfterViewInit(): void {
@@ -62,16 +66,31 @@ export class DropSectionComponent implements OnInit, AfterViewInit {
   }
   
   defineElement = (element: any, name: string) => {
-    const computedCSS = window.getComputedStyle(element, ':placeholder');
+    const isButton = name === 'button';
+    const [ label, field ] = element.children;
+
+    const textContent = isButton
+      ? element?.textContent?.trim() ?? ''
+      : label?.textContent?.trim() ?? '';
+
+    const placeholder = field?.placeholder?.trim() ?? '';
+    const id = element?.id;
+    
+    const computedCSS = window.getComputedStyle(element);
     const nonCSSProps = {
-      textContent: element?.textContent ? element.textContent.trim() : '',
-      placeholder: element?.placeholder?.trim() ?? '',
-      id: element?.id,
+      textContent,
+      placeholder,
+      id,
       name,
     }
     const cssProps = props.reduce((obj: any, prop: string) => {
       const cssPropValue = computedCSS.getPropertyValue(prop);
-      const sanitized = this.removeSuffix(cssPropValue);
+      let sanitized: string | undefined = this.removeSuffix(cssPropValue);
+      const isRgb = sanitized.includes('rgb');
+
+      if(isRgb) {
+        sanitized = this.rgbToHex(sanitized);
+      }
 
       obj[prop] = sanitized;
 
@@ -105,6 +124,15 @@ export class DropSectionComponent implements OnInit, AfterViewInit {
     const cleared = parseInt(str, 10);
 
     return Number.isNaN(cleared) ? str : cleared.toFixed(0);
+  }
+  rgbToHex(rgb: string) {
+    const rgbArr = rgb.match(/\d+/g);
+    const toHex = (color: string) => {
+      const hexadecimal = parseInt(color, 10).toString(16);
+      return hexadecimal.length == 1 ? "0" + hexadecimal : hexadecimal;
+    }
+
+    return rgbArr?.reduce((hex, color) => hex += toHex(color), '#');
   }
   selectElement = (id: string) => {
     this.store.dispatch(setSelectedElement({ id }))

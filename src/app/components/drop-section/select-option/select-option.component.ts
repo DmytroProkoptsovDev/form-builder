@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Input, AfterViewInit, ElementRef } from '
 import { Store } from '@ngrx/store';
 import { PropertySetterService } from 'src/app/services/property-setter/property-setter.service';
 import { getFieldStylesToApply } from '../../accordion/accordion.selectors';
+import { getSelectedElement } from '../drop-section.selectors';
 
 @Component({
   selector: 'app-select-option',
@@ -17,10 +18,12 @@ export class SelectOptionComponent implements OnInit, AfterViewInit {
   
   @ViewChild('select') selectRef!: ElementRef;
 
+  public isSelected!: boolean;
+
   constructor(
     private store: Store,
     private propertyService: PropertySetterService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.store.select(getFieldStylesToApply(this.id)).subscribe(styles => {
@@ -28,6 +31,9 @@ export class SelectOptionComponent implements OnInit, AfterViewInit {
         .setProps(styles)
         .setRef(this.selectRef)
         .applyAllProperties();
+    });
+    this.store.select(getSelectedElement).subscribe(id => {
+      this.isSelected = id === this.id
     });
   }
   ngAfterViewInit(): void {
@@ -38,6 +44,6 @@ export class SelectOptionComponent implements OnInit, AfterViewInit {
   });
   }
   sendId() {
-    this.onClick(this.id)
+    this.onClick(this.id);
   }
 }

@@ -19,7 +19,6 @@ import { ButtonComponent } from './components/drop-section/button/button.compone
 import { CheckboxWithLabelComponent } from './components/drop-section/checkbox-with-label/checkbox-with-label.component';
 import { SelectOptionComponent } from './components/drop-section/select-option/select-option.component';
 import { AccordionComponent } from './components/accordion/accordion.component';
-import { AddComponentDirective } from './directives/add-component.directive';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -32,6 +31,7 @@ import { accordionReducer } from './components/accordion/accordion.reducers';
 import { dragSectionReducer } from './components/drag-section/drag-section.reducers';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ToStringPipe } from './pipes/to-string/to-string.pipe';
+import { ToggleClassDirective } from './directives/toggle-class/toggle-class.directive';
 
 @NgModule({
   declarations: [
@@ -47,9 +47,9 @@ import { ToStringPipe } from './pipes/to-string/to-string.pipe';
     CheckboxWithLabelComponent,
     SelectOptionComponent,
     AccordionComponent,
-    AddComponentDirective,
     NormalizeCasePipe,
     ToStringPipe,
+    ToggleClassDirective,
   ],
   imports: [
     BrowserModule,
