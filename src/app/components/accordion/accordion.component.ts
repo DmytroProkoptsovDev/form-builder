@@ -4,8 +4,7 @@ import { Store } from '@ngrx/store';
 import { FormGroup } from '@angular/forms';
 
 // NgRx instances
-import { setAppliedFieldStyles, setAppliedFormStyles } from './accordion.actions';
-import { getSelectedFieldProps, getFormStyles } from './../drop-section/drop-section.selectors';
+import { setAppliedFieldStyles, setAppliedFormStyles, setDefaultFieldStyles, setDefaultFormStyles } from './accordion.actions';
 
 // interfaces and types
 import { IElementProperty } from './../drop-section/drop-section.actions';
@@ -14,6 +13,7 @@ import { StylesPickerService } from 'src/app/services/styles-picker/styles-picke
 import { IField } from 'src/app/models/form.model';
 import { IDefault, IFormFieldsMetaDataDictionary } from 'src/app/models/dictionaries.model';
 import { formFieldsMetaDataDictionary } from 'src/app/constants/forms-fields.constants';
+import { getFormStylesToApply, getSelectedFieldStyles } from './accordion.selectors';
 
 
 interface IDictionary {
@@ -67,8 +67,8 @@ export class AccordionComponent implements OnInit {
       private store: Store,
       private stylePicker: StylesPickerService
     ) {
-    this.store.select(getSelectedFieldProps).subscribe(this.handleSelectedFieldStyles);
-    this.store.select(getFormStyles).subscribe(this.handleFormStyles);
+    this.store.select(getSelectedFieldStyles).subscribe(this.handleSelectedFieldStyles);
+    this.store.select(getFormStylesToApply).subscribe(this.handleFormStyles);
 
     this.dictionary = {
       [this.formNode]: {
@@ -82,23 +82,28 @@ export class AccordionComponent implements OnInit {
     }
   }
   ngOnInit(): void {}
-  handleSelectedFieldStyles = (selectedFieldProps: IElementProperty | undefined) => {
-    console.log(selectedFieldProps);
+  handleSelectedFieldStyles = (selectedFieldProps: IElementProperty|undefined) => {
     this.shouldDisableButtons = !Boolean(selectedFieldProps);
 
     const data = selectedFieldProps ?? {};
+    const field = Object.keys(data).reduce((acc: any, prop: string) => {
+      const isBoolean = typeof data[prop] === 'boolean';
+  
+      acc[prop] = isBoolean ? data[prop] : data[prop]?.replace(/px/g, '');
+
+      return acc;
+    },{});
     const fieldForm = this.dictionary?.[this.fieldNode]?.formGroup;
 
-    this.selectedFieldId = data?.['id'];
-    this.selectedFieldName = data?.['name'];
-    this.default[this.fieldNode] = data;
+    this.selectedFieldId = field?.['id'];
+    this.selectedFieldName = field?.['name'];
+    this.default[this.fieldNode] = field;
 
-    fieldForm?.patchValue(data);
+    fieldForm?.patchValue(field);
   }
   handleFormStyles = (formStyles: IElementProperty) => {
     const formStylesForm = this.dictionary?.[this.formNode]?.formGroup;
 
-    this.default[this.formNode] = formStyles;
     formStylesForm?.patchValue(formStyles);
   }
   onSubmit(id: string) {
@@ -113,14 +118,10 @@ export class AccordionComponent implements OnInit {
     this.store.dispatch(action);
   }
   reset(formName: string) {
-    const styles = this.default[formName];
-    const isFieldStylesForm = formName === this.fieldNode;
+    const action = formName === this.formNode
+      ? setDefaultFormStyles()
+      : setDefaultFieldStyles({ payload: this.selectedFieldId });
 
-    const action = isFieldStylesForm
-      ? setAppliedFieldStyles({ payload: styles })
-      : setAppliedFormStyles({ payload: styles});
-
-    this.dictionary?.[formName]?.formGroup.patchValue(styles);
     this.store.dispatch(action);
   }
   addSuffix(formName: string, value: any) {
@@ -139,6 +140,4 @@ export class AccordionComponent implements OnInit {
 
     return suffixed;
 }
-  log(i: any) {
-  }
 }

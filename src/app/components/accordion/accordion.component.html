@@ -64,7 +64,6 @@
                             matInput
                             [formControlName]="field.propertyName"
                             type="color"
-                            (click)="log(input)"
                         />
                         <span matSuffix *ngIf="fieldsMetaData[element.node].suffix[field.propertyName]">
                             {{ fieldsMetaData[element.node].suffix[field.propertyName] }}

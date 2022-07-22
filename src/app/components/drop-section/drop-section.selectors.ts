@@ -23,5 +23,5 @@ export const getSelectedFieldProps = createSelector(
 )
 export const getFormStyles = createSelector(
     selectDropSectionFeature,
-    (state) => state.formStyles,
+    (state) => state.defaultFormStyles,
 )

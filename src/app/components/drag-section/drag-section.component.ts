@@ -31,8 +31,8 @@ export class DragSectionComponent implements OnInit {
         event.currentIndex,
       );
 
-      const { id } = event.item.element.nativeElement;
-      this.store.dispatch(removeDrabable({payload: { id } }));
+      const id = event.item.element.nativeElement?.children[0]?.['id'];
+      this.store.dispatch(removeDrabable({ payload: { id } }));
 
       this.temp.length = 0;
     }

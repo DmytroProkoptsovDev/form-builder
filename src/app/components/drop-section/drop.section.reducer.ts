@@ -6,13 +6,13 @@ import {
 
 export interface IState {
     elementList: IElementProperty[];
-    formStyles: IElementProperty;
+    defaultFormStyles: IElementProperty;
     selectedElement: string;
 }
 
 export const initialState: IState = {
     elementList: [],
-    formStyles: {},
+    defaultFormStyles: {},
     selectedElement: '',
 };
 
@@ -28,6 +28,6 @@ export const dropSectionReducer = createReducer(
     }))),
     on(initFormStyles, (state, { payload }) => ({
         ...state,
-        formStyles: { ...payload }
+        defaultFormStyles: { ...payload }
     }))
 );

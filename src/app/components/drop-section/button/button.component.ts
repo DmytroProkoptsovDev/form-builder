@@ -26,13 +26,7 @@ export class ButtonComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.select(getFieldStylesToApply(this.id)).subscribe(styles => { 
-      this.styles = styles;
-      // this.propertyService
-      //   .setProps(styles)
-      //   .setRef(this.buttonRef)
-      //   .applyAllProperties();
-    });
+    this.store.select(getFieldStylesToApply(this.id)).subscribe(styles => this.styles = styles);
     this.store.select(getSelectedElement).subscribe(id => {
       this.isSelected = id === this.id
     });

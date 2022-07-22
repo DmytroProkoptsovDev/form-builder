@@ -1,4 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { getAllDroppedFields, getFormStyles, getSelectedElement } from '../drop-section/drop-section.selectors';
 import { IAccrdionState } from './accordion.reducers';
 
 
@@ -23,11 +24,34 @@ export const getFieldStylesToApply = (id: string) => createSelector(
         return allCustomStyles.find((field: {[key: string]: string }) => field['id'] === id);
     }
 );
+export const getSelectedFieldStyles = createSelector( 
+    getAllFiledStyles,
+    getAllDroppedFields,
+    getSelectedElement,
+    (allCustomStyles: any[], initalFieldStyles: any, selectedElement) => {
+        const hasCustom = allCustomStyles.find(
+            (field: {[key: string]: string }) =>
+                field['id'] === selectedElement);
+        
+        if (hasCustom) return hasCustom;
+        
+        return initalFieldStyles.find(
+            (field: {[key: string]: string}) =>
+                field['id'] === selectedElement);
+    }
+);
 
 export const getFormStylesToApply = createSelector(
     selectAccordionFeature,
-    (state) => state.formStyles,
-)
+    getFormStyles,
+    (state, defaultStyles) => {
+        const hasStyles = Object.keys(state.formStyles).length;
+
+        if (hasStyles) return state.formStyles;
+
+        return defaultStyles;
+    },
+);
 export const getAccordionItems = createSelector(
     selectAccordionFeature,
     (state) => state.accordionItems

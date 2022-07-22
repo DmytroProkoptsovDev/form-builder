@@ -1,7 +1,12 @@
 import { createReducer, on } from "@ngrx/store";
 import { formProps, formFieldProps, IElementFieldProperties } from '../../constants/accordion-data';
+import { removeDrabable } from "../drag-section/drag-section.actions";
 import { FORM_ELEMENT_NODE, FORM_NODE } from "../drop-section/drop-section.constants";
-import { IAppliedStyles, setAppliedFieldStyles, setAppliedFormStyles } from './accordion.actions';
+import {
+    IAppliedStyles, setAppliedFieldStyles,
+    setAppliedFormStyles, setDefaultFieldStyles,
+    setDefaultFormStyles
+} from './accordion.actions';
 
 export interface IAccordionItem {
     name: string,
@@ -55,4 +60,20 @@ export const accordionReducer = createReducer(
         ...state,
         formStyles: { ...payload }
     })),
+    on(setDefaultFieldStyles, (state, { payload }) => ({
+        ...state,
+        fieldsStyles: state.fieldsStyles.filter(
+            (field: {[key: string]: string}) =>
+                field['id'] !== payload)
+    })),
+    on(setDefaultFormStyles, (state) => ({
+        ...state,
+        formStyles: {}
+    })),
+    on(removeDrabable, (state, { payload }) => ({
+            ...state,
+            fieldsStyles: state.fieldsStyles.filter(
+                (field: {[key: string]: string}) =>
+                    field['id'] !== payload.id)
+        }))
 )
