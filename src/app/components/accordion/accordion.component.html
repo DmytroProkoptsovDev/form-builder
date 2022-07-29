@@ -38,8 +38,8 @@
                     <mat-form-field
                         *ngIf="field.type === 'text'"
                         class="form-field"
-                        [class.full-width]="selectedFieldName !== 'input' && first"
-                        [class.half-width]="selectedFieldName === 'input' || !first"
+                        [class.full-width]="(selectedFieldName !== 'input' && selectedFieldName !== 'textarea') && first"
+                        [class.half-width]="selectedFieldName === 'input' || selectedFieldName !== 'textarea' || !first"
                         appearance="fill"
                     >
                         <mat-label>{{ field.fieldName | normalizeCase }}</mat-label>

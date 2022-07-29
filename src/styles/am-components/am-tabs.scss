@@ -1,0 +1,32 @@
+mat-tab-group mat-tab-header {
+    height: 50px;
+
+    & .mat-tab-list {
+        & .mat-tab-labels {
+            height: 50px;
+
+            & .mat-tab-label {
+                width: 50%;
+                padding-top: 10px;
+                padding-bottom: 25px;
+                font-size: $fs-heading;
+            }
+            & .mat-tab-label-content {
+                color: $clr-text-main;
+            }
+            & + .mat-ink-bar {
+                background-color: $clr-accent-submain;
+            }
+        }
+    }
+}
+mat-tab-group {
+    & mat-tab-body {
+        & .mat-tab-body-content {
+            mat-form-field .mat-form-field .mat-form-field-label {
+                top: 0;
+                left: 15px;
+            }
+        }
+    }
+}

@@ -32,6 +32,11 @@ import { dragSectionReducer } from './components/drag-section/drag-section.reduc
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ToStringPipe } from './pipes/to-string/to-string.pipe';
 import { ToggleClassDirective } from './directives/toggle-class/toggle-class.directive';
+import { LoginModule } from './modules/login/login.module';
+import { FormBuilderPage } from './modules/form-bilder/form-builder.module';
+import { HttpClientModule } from '@angular/common/http';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './components/auth/auth.effects';
 
 @NgModule({
   declarations: [
@@ -50,6 +55,7 @@ import { ToggleClassDirective } from './directives/toggle-class/toggle-class.dir
     NormalizeCasePipe,
     ToStringPipe,
     ToggleClassDirective,
+    FormBuilderPage,
   ],
   imports: [
     BrowserModule,
@@ -64,12 +70,15 @@ import { ToggleClassDirective } from './directives/toggle-class/toggle-class.dir
     MatFormFieldModule,
     ReactiveFormsModule,
     MatCheckboxModule,
+    LoginModule,
+    HttpClientModule,
     StoreModule.forRoot({
       dropSection: dropSectionReducer,
       accordion: accordionReducer,
       dragSection: dragSectionReducer
     }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([AuthEffects])
   ],
   providers: [ToStringPipe],
   bootstrap: [AppComponent]
