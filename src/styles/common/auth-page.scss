@@ -1,6 +1,9 @@
 .auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 488px;
-    padding-top: 228px;
+    height: 100vh;
     margin-inline: auto;
 }
 .auth-form {

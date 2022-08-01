@@ -34,9 +34,13 @@ import { ToStringPipe } from './pipes/to-string/to-string.pipe';
 import { ToggleClassDirective } from './directives/toggle-class/toggle-class.directive';
 import { LoginModule } from './modules/login/login.module';
 import { FormBuilderPage } from './modules/form-bilder/form-builder.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './components/auth/auth.effects';
+import { AuthComponent } from './components/auth/auth.component';
+import { JwtTokenInterceptor } from './interceptors/jwt-token.interceptor';
+import { NothingFoundComponent } from './components/nothing-found/nothing-found.component';
+import { authReducer } from './components/auth/auth.reducers';
 
 @NgModule({
   declarations: [
@@ -56,6 +60,7 @@ import { AuthEffects } from './components/auth/auth.effects';
     ToStringPipe,
     ToggleClassDirective,
     FormBuilderPage,
+    NothingFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -70,17 +75,19 @@ import { AuthEffects } from './components/auth/auth.effects';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatCheckboxModule,
-    LoginModule,
     HttpClientModule,
     StoreModule.forRoot({
       dropSection: dropSectionReducer,
       accordion: accordionReducer,
-      dragSection: dragSectionReducer
+      dragSection: dragSectionReducer,
+      auth: authReducer
     }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([AuthEffects])
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
-  providers: [ToStringPipe],
+  providers: [
+    ToStringPipe,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
